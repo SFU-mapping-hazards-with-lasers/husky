@@ -7,7 +7,7 @@
 
   <group ns="joy_teleop" if="$(arg joystick)">
     <group unless="$(optenv HUSKY_LOGITECH 0)" >
-      <rosparam command="load" file="$(find husky_control)/config/teleop_ps4.yaml" />
+      <rosparam command="load" file="$(find husky_control)/config/teleop_xbox.yaml" />
     </group>
 
     <group if="$(optenv HUSKY_LOGITECH 0)" >
@@ -15,8 +15,17 @@
       <param name="joy_node/dev" value="$(arg joy_dev)" />
     </group>
 
-    <node pkg="joy" type="joy_node" name="joy_node" if="$(arg joystick)" />
-    <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
+    <node pkg="joy" type="joy_node" name="joy_node" if="$(arg joystick)">
+      <!-- <param name="dev" value="/dev/input/js0"/>
+      <param name="coalesce_interval" value="0.02"/>
+      <param name="autorepeat_rate" value="30.0"/> -->
+    </node>
+    <!-- for some reason the original name of teleop_twist_joy didn't work, but switching to teleop_node does-->
+    <!-- teleop_node is the name given from the install ros-noetic-joy package -->
+    <!-- maybe there is a node already running named teleop_twist_joy -->
+    <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_node">
+      <!-- <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/> -->
+    </node>
   </group>
 
   <group ns="kb_teleop" if="$(arg keyboard)" >
