@@ -115,7 +115,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <xacro:property name="husky_rear_bumper_extend"   value="$(optenv HUSKY_REAR_BUMPER_EXTEND 0)" />
 
   <!-- Height of the sensor arch in mm.  Must be either 510 or 300 -->
-  <xacro:arg name="sensor_arch"         default="$(optenv HUSKY_SENSOR_ARCH 0)" />
+  <xacro:arg name="sensor_arch"         default="$(optenv HUSKY_SENSOR_ARCH 1)" />
   <xacro:arg name="sensor_arch_height"  default="$(optenv HUSKY_SENSOR_ARCH_HEIGHT 510)" />
   <xacro:arg name="sensor_arch_xyz"     default="$(optenv HUSKY_SENSOR_ARCH_OFFSET 0 0 0)"/>
   <xacro:arg name="sensor_arch_rpy"     default="$(optenv HUSKY_SENSOR_ARCH_RPY 0 0 0)"/>
@@ -134,6 +134,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <xacro:include filename="$(find husky_description)/urdf/accessories/vlp16_mount.urdf.xacro"/>
   <xacro:include filename="$(find husky_description)/urdf/decorations.urdf.xacro" />
   <xacro:include filename="$(find husky_description)/urdf/wheel.urdf.xacro" />
+  <xacro:include filename="$(find husky_description)/urdf/accessories/kinect.xacro" />
+
 
   <xacro:property name="M_PI" value="3.14159"/>
 
@@ -333,6 +335,11 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
       </xacro:VLP-16>
     </xacro:unless>
   </xacro:if>
+
+  <!-- Kinect sensor that SIRL added -->
+    <xacro:kinect parent="sensor_arch_mount_link">
+        <origin xyz="0 0 0.05" rpy="0 0 0" />
+    </xacro:kinect>
 
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
